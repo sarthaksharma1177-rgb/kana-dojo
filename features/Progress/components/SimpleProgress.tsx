@@ -1,7 +1,18 @@
 'use client';
+import { useState } from 'react';
 import useStatsStore from '@/features/Progress/store/useStatsStore';
-import { Trophy, Target, TrendingUp, Trash } from 'lucide-react';
+import { Trophy, Target, TrendingUp, Trash, AlertTriangle } from 'lucide-react';
 import clsx from 'clsx';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle
+} from '@/shared/components/ui/alert-dialog';
 // import yodaCage from "./yodaCage.png";
 
 // Simple Card component to replace the missing UI component
@@ -48,6 +59,7 @@ const CardContent = ({ children }: { children: React.ReactNode }) => (
 
 export default function SimpleProgress() {
   const { allTimeStats, clearAllProgress } = useStatsStore();
+  const [showResetModal, setShowResetModal] = useState(false);
 
   const totalQuestions =
     allTimeStats.totalCorrect + allTimeStats.totalIncorrect;
@@ -84,7 +96,7 @@ export default function SimpleProgress() {
         </h1>
 
         <button
-          onClick={clearAllProgress}
+          onClick={() => setShowResetModal(true)}
           className={clsx(
             'py-2 px-4',
             'rounded-2xl duration-200 hover:cursor-pointer bg-[var(--secondary-color)] border-b-4 border-[var(--secondary-color-accent)] text-[var(--background-color)]',
@@ -95,6 +107,38 @@ export default function SimpleProgress() {
           Reset Progress
         </button>
       </div>
+
+      {/* Confirmation Dialog */}
+      <AlertDialog open={showResetModal} onOpenChange={setShowResetModal}>
+        <AlertDialogContent className='bg-[var(--card-color)] border-[var(--border-color)]'>
+          <AlertDialogHeader>
+            <div className='flex items-center gap-3 mb-2'>
+              <div className='flex-shrink-0 w-12 h-12 rounded-full bg-red-100 flex items-center justify-center'>
+                <AlertTriangle className='h-6 w-6 text-red-600' />
+              </div>
+              <AlertDialogTitle className='text-[var(--main-color)] text-xl'>
+                Reset All Progress?
+              </AlertDialogTitle>
+            </div>
+            <AlertDialogDescription className='text-[var(--secondary-color)] leading-relaxed'>
+              This will permanently delete all your progress data, including
+              sessions, accuracy stats, and character mastery. This action
+              cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className='text-[var(--main-color)] border-[var(--border-color)] hover:bg-[var(--background-color)]'>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={clearAllProgress}
+              className='bg-red-600 hover:bg-red-700 text-white'
+            >
+              Reset Progress
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       {/* Overview Stats */}
       <div className='grid grid-cols-1 md:grid-cols-4 gap-4'>
