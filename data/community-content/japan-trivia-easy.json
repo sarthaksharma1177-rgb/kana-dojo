@@ -87,6 +87,15 @@
   "correctIndex": 0
   },
   {
+content/add-trivia-question-fuji
+    "question": "Which mountain is Japan’s highest peak?",
+    "difficulty": "easy",
+    "answers": [
+      "Mount Fuji",
+      "Mount Kita",
+      "Mount Tate",
+      "Mount Haku"
+
     "question": "What is the Japanese term for a traditional inn?",
     "difficulty": "easy",
     "answers": [
@@ -94,6 +103,7 @@
       "Minshuku",
       "Izakaya",
       "Yatai"
+main
     ],
     "correctIndex": 0
   }
